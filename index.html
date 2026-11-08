@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Календарь мигрени — дневник приступов, триггеров и лекарств на Android</title>
+<meta name="description" content="Календарь мигрени — бесплатный дневник приступов головной боли, зон боли, триггеров и лекарств. Помесячная статистика и экспорт CSV для врача. Без рекламы и регистрации, данные только на устройстве.">
+<meta name="keywords" content="календарь мигрени, дневник мигрени, дневник головной боли, триггеры мигрени, зоны боли, лекарства, статистика приступов, экспорт CSV, migraine diary, headache tracker">
+<meta property="og:title" content="Календарь мигрени — дневник приступов и триггеров">
+<meta property="og:description" content="Записывайте приступы, зоны боли, триггеры и лекарства. Бесплатно, без рекламы и регистрации. Данные хранятся только на устройстве.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://proffstandart.github.io/migraine-calendar-site/">
+<meta property="og:image" content="https://proffstandart.github.io/migraine-calendar-site/img/icon-512.png">
+<link rel="canonical" href="https://proffstandart.github.io/migraine-calendar-site/">
+<link rel="icon" type="image/png" href="img/icon-512.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Календарь мигрени",
+  "alternateName": "Migraine Calendar",
+  "operatingSystem": "Android 8.0+",
+  "applicationCategory": "HealthApplication",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" },
+  "description": "Дневник приступов головной боли, зон боли, триггеров и лекарств с помесячной статистикой и экспортом CSV. Данные хранятся только на устройстве.",
+  "url": "https://proffstandart.github.io/migraine-calendar-site/",
+  "downloadUrl": "https://www.rustore.ru/catalog/app/ru.proffstandart.migrainecalendar",
+  "inLanguage": ["ru", "en", "de", "fr", "es", "zh"]
+}
+</script>
+<style>
+  :root {
+    --p-bg: oklch(0.145 0.008 285);
+    --p-card: oklch(0.19 0.009 285);
+    --p-text: oklch(0.93 0.012 85);
+    --p-dim: oklch(0.72 0.015 285);
+    --p-accent: oklch(0.54 0.18 22);
+    --p-accent-soft: oklch(0.82 0.07 22);
+    --bg: var(--p-bg);
+    --card: var(--p-card);
+    --text: var(--p-text);
+    --dim: var(--p-dim);
+    --accent: var(--p-accent);
+    --accent-soft: var(--p-accent-soft);
+    --line: oklch(0.93 0.012 85 / 0.14);
+    --focus: oklch(0.88 0.09 85);
+    color-scheme: dark;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    min-height: 100dvh;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { display: block; max-width: 100%; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+  button { font: inherit; }
+  a { color: inherit; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+  .langtabs {
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end;
+    padding-top: 20px; font-family: system-ui, sans-serif;
+  }
+  .langtabs button {
+    min-height: 44px; background: transparent; border: 1px solid var(--line);
+    color: var(--dim); border-radius: 999px; padding: 8px 15px;
+    font-size: 0.84rem; cursor: pointer; transition: background-color 160ms ease-out, color 160ms ease-out, border-color 160ms ease-out;
+  }
+  .langtabs button.active { background: var(--text); color: var(--bg); border-color: var(--text); font-weight: 600; }
+  .langtabs button:hover { color: var(--text); border-color: var(--dim); }
+  .langtabs button.active:hover { color: var(--bg); }
+  header.hero {
+    display: flex; gap: 28px; align-items: center;
+    padding: 36px 0 40px; flex-wrap: wrap;
+  }
+  .hero-copy { flex: 1 1 560px; }
+  .icon { width: 128px; height: 128px; border-radius: 26px; box-shadow: 0 8px 32px oklch(0.05 0.01 285 / 0.5); }
+  h1 { font-size: clamp(2rem, 5vw, 2.55rem); line-height: 1.15; margin-bottom: 12px; text-wrap: balance; }
+  .lead { color: var(--dim); font-size: 1.08rem; max-width: 68ch; }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+  .badge {
+    font-family: system-ui, sans-serif; font-size: 0.8rem;
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 12px; color: var(--dim);
+  }
+  .cta {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 52px; margin-top: 24px;
+    font-family: system-ui, sans-serif; font-weight: 650;
+    background: var(--accent); color: var(--text); text-decoration: none;
+    padding: 13px 28px; border-radius: 12px; font-size: 1.05rem;
+    transition: filter 160ms ease-out, transform 160ms ease-out;
+  }
+  .cta:hover { filter: brightness(1.14); }
+  .cta:active { transform: scale(0.98); }
+  section { padding: 36px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 1.55rem; line-height: 1.25; margin-bottom: 18px; text-wrap: balance; }
+  h3.sub { font-size: 1.17rem; line-height: 1.35; margin: 24px 0 10px; }
+  .shots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .shots img {
+    width: 100%; height: auto; aspect-ratio: 9 / 16; object-fit: cover; border-radius: 14px; border: 1px solid var(--line);
+    box-shadow: 0 6px 24px oklch(0.05 0.01 285 / 0.4); background: var(--card);
+  }
+  .shots figcaption {
+    font-family: system-ui, sans-serif; font-size: 0.86rem;
+    color: var(--dim); margin-top: 10px; text-align: center;
+  }
+  ul.features { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 28px; }
+  ul.features.one { grid-template-columns: 1fr; }
+  ul.features li { padding-left: 24px; position: relative; }
+  ul.features li::before { content: '●'; position: absolute; left: 0; color: var(--accent-soft); font-size: 0.7rem; top: 7px; }
+  .note {
+    font-family: system-ui, sans-serif; font-size: 1rem; color: var(--dim);
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 18px 20px; max-width: 75ch;
+  }
+  .note b { color: var(--text); }
+  .note + .features { margin-top: 18px; }
+  .warning { margin-top: 16px; color: var(--text); }
+  footer {
+    border-top: 1px solid var(--line); padding: 28px 0 44px;
+    font-family: system-ui, sans-serif; font-size: 0.9rem; color: var(--dim);
+  }
+  footer a { color: var(--text); text-underline-offset: 3px; }
+  .tm { font-size: 0.78rem; margin: 12px 0; }
+  @media (max-width: 700px) {
+    .langtabs { justify-content: flex-start; }
+    header.hero { padding-top: 28px; gap: 22px; }
+    .icon { width: 96px; height: 96px; border-radius: 20px; }
+    .hero-copy { flex-basis: 100%; }
+    .shots { grid-template-columns: 1fr; gap: 24px; }
+    .shots figure { max-width: 340px; margin: 0 auto; width: 100%; }
+    ul.features { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav class="langtabs" id="langtabs" aria-label="Language / Язык">
+  <button type="button" data-lang="ru" class="active" aria-pressed="true">Русский</button>
+  <button type="button" data-lang="en" aria-pressed="false">English</button>
+  <button type="button" data-lang="de" aria-pressed="false">Deutsch</button>
+  <button type="button" data-lang="fr" aria-pressed="false">Français</button>
+  <button type="button" data-lang="zh" aria-pressed="false">中文</button>
+  <button type="button" data-lang="es" aria-pressed="false">Español</button>
+</nav>
+
+<header class="hero">
+  <img class="icon" src="img/icon-512.png" alt="" width="128" height="128">
+  <div class="hero-copy">
+    <h1 data-i18n="h1">Календарь мигрени</h1>
+    <p class="lead" data-i18n="lead">Бесплатный дневник приступов головной боли, зон боли, возможных триггеров и принятых лекарств. Наблюдения удобно сохранить и показать врачу.</p>
+    <div class="badges">
+      <span class="badge" data-i18n="b1">бесплатно</span>
+      <span class="badge" data-i18n="b2">без рекламы</span>
+      <span class="badge" data-i18n="b3">работает офлайн</span>
+      <span class="badge">Android 8.0+</span>
+      <span class="badge" data-i18n="b5">6 языков</span>
+    </div>
+    <a class="cta" href="https://www.rustore.ru/catalog/app/ru.proffstandart.migrainecalendar" target="_blank" rel="noopener noreferrer" data-i18n="cta1">Скачать в RuStore</a>
+  </div>
+</header>
+
+<main>
+<section>
+  <h2 data-i18n="sh1">Как это выглядит</h2>
+  <div class="shots">
+    <figure>
+      <img src="img/01-main.jpg" alt="Главный экран с кнопкой начала приступа" data-alt-key="cap1" width="1080" height="1920">
+      <figcaption data-i18n="cap1">Главный экран и статистика месяца</figcaption>
+    </figure>
+    <figure>
+      <img src="img/02-details.jpg" alt="Завершение приступа и выбор характеристик" data-alt-key="cap2" width="1080" height="1920" loading="lazy">
+      <figcaption data-i18n="cap2">Длительность, сила и зоны боли</figcaption>
+    </figure>
+    <figure>
+      <img src="img/03-triggers.jpg" alt="Выбор зон боли и возможных триггеров" data-alt-key="cap3" width="1080" height="1920" loading="lazy">
+      <figcaption data-i18n="cap3">Зоны боли и возможные триггеры</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <h2 data-i18n="sh2">Возможности</h2>
+  <ul class="features">
+    <li data-i18n="f1">Запуск таймера приступа и ручное добавление записей</li>
+    <li data-i18n="f2">Длительность от 1 до 72 часов и сила по шкале 1–3</li>
+    <li data-i18n="f3">Множественный выбор зон боли: лоб, виски, глаза, затылок, темя, лицо, шея и другие</li>
+    <li data-i18n="f4">Возможные триггеры: сон, стресс, гормональные колебания, питание, кофеин, погода, свет, запахи и другие</li>
+    <li data-i18n="f5">Название лекарства и дозировка; ранее введённые варианты доступны для быстрого выбора</li>
+    <li data-i18n="f6">Свободный комментарий к каждому приступу</li>
+    <li data-i18n="f7">История по месяцам, редактирование и удаление записей с возможностью отмены</li>
+    <li data-i18n="f8">Помесячная статистика: приступы, дни с мигренью, средняя длительность и сила</li>
+    <li data-i18n="f9">Экспорт записей за выбранный месяц в CSV для таблицы или передачи врачу</li>
+    <li data-i18n="f10">Три темы оформления и интерфейс на русском, английском, немецком, французском, испанском и китайском</li>
+  </ul>
+</section>
+
+<section>
+  <h2 data-i18n="sh3">Как работает дневник</h2>
+
+  <h3 class="sub" data-i18n="t1h">1. От начала приступа до понятной истории</h3>
+  <p class="note" data-i18n="t1p">Начало приступа можно отметить одной кнопкой, а характеристики добавить при завершении или позже. Если какие-то сведения неизвестны, запись всё равно сохранится.</p>
+  <ul class="features one">
+    <li data-i18n="t1a"><b>Быстрый старт.</b> Таймер фиксирует начало, а пропущенный приступ можно добавить вручную.</li>
+    <li data-i18n="t1b"><b>Наблюдения без обязательных полей.</b> Силу, зоны боли, триггеры, лекарство и комментарий заполняете только вы и только когда это удобно.</li>
+    <li data-i18n="t1c"><b>История под контролем.</b> Записи можно редактировать и удалять; после удаления доступна отмена действия.</li>
+  </ul>
+
+  <h3 class="sub" data-i18n="t2h">2. Данные остаются у вас</h3>
+  <p class="note" data-i18n="t2p">Приложение работает без интернета, аккаунта, рекламы и аналитики. Разработчик не получает копии ваших записей.</p>
+  <ul class="features one">
+    <li data-i18n="t2a"><b>Локальное хранение.</b> Дневник и список ранее введённых лекарств сохраняются только на устройстве.</li>
+    <li data-i18n="t2b"><b>CSV по вашему действию.</b> Файл создаётся через системный диалог Android в выбранном вами месте. Вы сами решаете, кому его отправить.</li>
+    <li data-i18n="t2c"><b>Удаление без остатка в приложении.</b> Отдельные записи или все данные можно удалить в любой момент.</li>
+  </ul>
+</section>
+
+<section>
+  <h2 data-i18n="sh4">Для чего это нужно</h2>
+  <p class="note" data-i18n="who">Дневник помогает не полагаться только на память: перед визитом к врачу у вас будут даты, длительность, сила приступов и ваши наблюдения о возможных факторах. Это не автоматическая диагностика, а аккуратная история для разговора со специалистом.</p>
+  <p class="note warning" data-i18n="warning"><b>Важно:</b> приложение не ставит диагнозы, не назначает лечение и не оценивает эффективность препаратов. Перечень триггеров помогает фиксировать наблюдения и не означает доказанную причину приступа. Не изменяйте назначенное лечение на основании записей.</p>
+</section>
+</main>
+
+<footer>
+  <p><span data-i18n="ft1">Приложение:</span> <a href="https://www.rustore.ru/catalog/app/ru.proffstandart.migrainecalendar" target="_blank" rel="noopener noreferrer">RuStore</a> ·
+  <a href="privacy.html" data-i18n="ft2">политика конфиденциальности</a> ·
+  <a href="https://github.com/proffstandart" target="_blank" rel="noopener noreferrer" data-i18n="ft3">Proffstandart на GitHub</a></p>
+  <p class="tm" data-i18n="tm">Все упомянутые названия продуктов и торговые марки принадлежат их правообладателям.</p>
+  <p>© 2026 Proffstandart</p>
+</footer>
+
+</div>
+
+<script>
+const I18N = {
+ru: {
+  title: 'Календарь мигрени — дневник приступов, триггеров и лекарств на Android',
+  h1: 'Календарь мигрени',
+  lead: 'Бесплатный дневник приступов головной боли, зон боли, возможных триггеров и принятых лекарств. Наблюдения удобно сохранить и показать врачу.',
+  b1: 'бесплатно', b2: 'без рекламы', b3: 'работает офлайн', b5: '6 языков', cta1: 'Скачать в RuStore',
+  sh1: 'Как это выглядит', cap1: 'Главный экран и статистика месяца', cap2: 'Длительность, сила и зоны боли', cap3: 'Зоны боли и возможные триггеры',
+  sh2: 'Возможности',
+  f1: 'Запуск таймера приступа и ручное добавление записей',
+  f2: 'Длительность от 1 до 72 часов и сила по шкале 1–3',
+  f3: 'Множественный выбор зон боли: лоб, виски, глаза, затылок, темя, лицо, шея и другие',
+  f4: 'Возможные триггеры: сон, стресс, гормональные колебания, питание, кофеин, погода, свет, запахи и другие',
+  f5: 'Название лекарства и дозировка; ранее введённые варианты доступны для быстрого выбора',
+  f6: 'Свободный комментарий к каждому приступу',
+  f7: 'История по месяцам, редактирование и удаление записей с возможностью отмены',
+  f8: 'Помесячная статистика: приступы, дни с мигренью, средняя длительность и сила',
+  f9: 'Экспорт записей за выбранный месяц в CSV для таблицы или передачи врачу',
+  f10: 'Три темы оформления и интерфейс на русском, английском, немецком, французском, испанском и китайском',
+  sh3: 'Как работает дневник',
+  t1h: '1. От начала приступа до понятной истории',
+  t1p: 'Начало приступа можно отметить одной кнопкой, а характеристики добавить при завершении или позже. Если какие-то сведения неизвестны, запись всё равно сохранится.',
+  t1a: '<b>Быстрый старт.</b> Таймер фиксирует начало, а пропущенный приступ можно добавить вручную.',
+  t1b: '<b>Наблюдения без обязательных полей.</b> Силу, зоны боли, триггеры, лекарство и комментарий заполняете только вы и только когда это удобно.',
+  t1c: '<b>История под контролем.</b> Записи можно редактировать и удалять; после удаления доступна отмена действия.',
+  t2h: '2. Данные остаются у вас',
+  t2p: 'Приложение работает без интернета, аккаунта, рекламы и аналитики. Разработчик не получает копии ваших записей.',
+  t2a: '<b>Локальное хранение.</b> Дневник и список ранее введённых лекарств сохраняются только на устройстве.',
+  t2b: '<b>CSV по вашему действию.</b> Файл создаётся через системный диалог Android в выбранном вами месте. Вы сами решаете, кому его отправить.',
+  t2c: '<b>Удаление без остатка в приложении.</b> Отдельные записи или все данные можно удалить в любой момент.',
+  sh4: 'Для чего это нужно',
+  who: 'Дневник помогает не полагаться только на память: перед визитом к врачу у вас будут даты, длительность, сила приступов и ваши наблюдения о возможных факторах. Это не автоматическая диагностика, а аккуратная история для разговора со специалистом.',
+  warning: '<b>Важно:</b> приложение не ставит диагнозы, не назначает лечение и не оценивает эффективность препаратов. Перечень триггеров помогает фиксировать наблюдения и не означает доказанную причину приступа. Не изменяйте назначенное лечение на основании записей.',
+  ft1: 'Приложение:', ft2: 'политика конфиденциальности', ft3: 'Proffstandart на GitHub', tm: 'Все упомянутые названия продуктов и торговые марки принадлежат их правообладателям.'
+},
+en: {
+  title: 'Migraine Calendar — attack, trigger and medication diary for Android',
+  h1: 'Migraine Calendar',
+  lead: 'A free diary for headache attacks, pain areas, possible triggers and medication. Keep your observations organised and share them with your doctor.',
+  b1: 'free', b2: 'no ads', b3: 'works offline', b5: '6 languages', cta1: 'Get it on RuStore',
+  sh1: 'Screenshots', cap1: 'Home screen and monthly statistics', cap2: 'Duration, intensity and pain areas', cap3: 'Pain areas and possible triggers',
+  sh2: 'Features',
+  f1: 'Attack timer and manual record entry',
+  f2: 'Duration from 1 to 72 hours and intensity on a 1–3 scale',
+  f3: 'Multiple pain areas: forehead, temples, eyes, back of the head, crown, face, neck and more',
+  f4: 'Possible triggers: sleep, stress, hormonal changes, food, caffeine, weather, light, smells and more',
+  f5: 'Medication name and dosage, with previous entries available for quick selection',
+  f6: 'A free-form note for every attack',
+  f7: 'Monthly history, editing and deletion with an undo option',
+  f8: 'Monthly statistics: attacks, migraine days, average duration and intensity',
+  f9: 'CSV export for a selected month, ready for a spreadsheet or your doctor',
+  f10: 'Three themes and an interface in Russian, English, German, French, Spanish and Chinese',
+  sh3: 'How the diary works',
+  t1h: '1. From the start of an attack to a clear history',
+  t1p: 'Mark the start with one tap and add details when the attack ends or later. A record can be saved even when some information is unknown.',
+  t1a: '<b>Quick start.</b> The timer records the beginning; a missed attack can be added manually.',
+  t1b: '<b>No mandatory details.</b> You choose when and whether to add intensity, pain areas, triggers, medication and notes.',
+  t1c: '<b>A history you control.</b> Edit or delete records, with an undo option after deletion.',
+  t2h: '2. Your data stays with you',
+  t2p: 'The app works without internet, accounts, ads or analytics. The developer receives no copies of your records.',
+  t2a: '<b>Local storage.</b> The diary and previously entered medications are stored only on your device.',
+  t2b: '<b>CSV only on your request.</b> The file is created through the Android system dialog in a location you choose. You decide whom to send it to.',
+  t2c: '<b>Deletion inside the app.</b> Delete individual records or all app data at any time.',
+  sh4: 'Why keep a diary',
+  who: 'The diary helps you rely on more than memory: before a doctor’s visit, you have dates, duration, intensity and observations about possible factors. It is not automatic diagnosis, but a clear history for a conversation with a specialist.',
+  warning: '<b>Important:</b> the app does not diagnose, prescribe treatment or assess medication effectiveness. The trigger list records observations and does not establish a proven cause. Do not change prescribed treatment based on app records.',
+  ft1: 'App:', ft2: 'privacy policy', ft3: 'Proffstandart on GitHub', tm: 'All product names and trademarks mentioned are the property of their respective owners.'
+},
+de: {
+  title: 'Migräne-Kalender — Tagebuch für Anfälle, Auslöser und Medikamente für Android',
+  h1: 'Migräne-Kalender',
+  lead: 'Ein kostenloses Tagebuch für Kopfschmerzanfälle, Schmerzzonen, mögliche Auslöser und Medikamente. Beobachtungen lassen sich übersichtlich speichern und dem Arzt zeigen.',
+  b1: 'kostenlos', b2: 'werbefrei', b3: 'funktioniert offline', b5: '6 Sprachen', cta1: 'Bei RuStore laden',
+  sh1: 'So sieht es aus', cap1: 'Startseite und Monatsstatistik', cap2: 'Dauer, Stärke und Schmerzzonen', cap3: 'Schmerzzonen und mögliche Auslöser',
+  sh2: 'Funktionen',
+  f1: 'Anfallstimer und manuelle Erfassung von Einträgen',
+  f2: 'Dauer von 1 bis 72 Stunden und Stärke auf einer Skala von 1–3',
+  f3: 'Mehrere Schmerzzonen: Stirn, Schläfen, Augen, Hinterkopf, Scheitel, Gesicht, Nacken und weitere',
+  f4: 'Mögliche Auslöser: Schlaf, Stress, Hormonschwankungen, Ernährung, Koffein, Wetter, Licht, Gerüche und weitere',
+  f5: 'Medikamentenname und Dosierung; frühere Angaben stehen zur schnellen Auswahl bereit',
+  f6: 'Freier Kommentar zu jedem Anfall',
+  f7: 'Monatlicher Verlauf, Bearbeiten und Löschen mit Rückgängig-Funktion',
+  f8: 'Monatsstatistik: Anfälle, Migränetage, durchschnittliche Dauer und Stärke',
+  f9: 'CSV-Export für einen ausgewählten Monat zur Tabellenansicht oder für den Arzt',
+  f10: 'Drei Designs und Oberfläche auf Russisch, Englisch, Deutsch, Französisch, Spanisch und Chinesisch',
+  sh3: 'So funktioniert das Tagebuch',
+  t1h: '1. Vom Anfallsbeginn zum übersichtlichen Verlauf',
+  t1p: 'Markieren Sie den Beginn mit einer Taste und ergänzen Sie Details am Ende oder später. Einträge lassen sich auch mit fehlenden Angaben speichern.',
+  t1a: '<b>Schneller Start.</b> Der Timer erfasst den Beginn; vergessene Anfälle lassen sich manuell hinzufügen.',
+  t1b: '<b>Keine Pflichtangaben.</b> Sie entscheiden, ob und wann Sie Stärke, Schmerzzonen, Auslöser, Medikamente und Kommentare eintragen.',
+  t1c: '<b>Verlauf unter Ihrer Kontrolle.</b> Einträge lassen sich bearbeiten und löschen; das Löschen kann rückgängig gemacht werden.',
+  t2h: '2. Ihre Daten bleiben bei Ihnen',
+  t2p: 'Die App funktioniert ohne Internet, Konto, Werbung und Analyse. Der Entwickler erhält keine Kopien Ihrer Einträge.',
+  t2a: '<b>Lokale Speicherung.</b> Tagebuch und frühere Medikamentenangaben bleiben nur auf Ihrem Gerät.',
+  t2b: '<b>CSV nur auf Ihre Aktion.</b> Die Datei wird über den Android-Systemdialog an einem von Ihnen gewählten Ort erstellt. Sie bestimmen, wer sie erhält.',
+  t2c: '<b>Löschung in der App.</b> Einzelne Einträge oder alle App-Daten lassen sich jederzeit löschen.',
+  sh4: 'Wozu ein Tagebuch',
+  who: 'Das Tagebuch schafft eine verlässliche Grundlage: Vor dem Arztbesuch liegen Datum, Dauer, Stärke und Beobachtungen möglicher Faktoren vor. Es ersetzt keine Diagnose, sondern dokumentiert die Geschichte für das Gespräch mit der Fachperson.',
+  warning: '<b>Wichtig:</b> Die App stellt keine Diagnosen, verschreibt keine Behandlung und bewertet keine Arzneimittelwirkung. Die Auslöserliste dokumentiert Beobachtungen und beweist keine Ursache. Ändern Sie eine verordnete Behandlung nicht aufgrund der Einträge.',
+  ft1: 'App:', ft2: 'Datenschutzerklärung', ft3: 'Proffstandart auf GitHub', tm: 'Alle genannten Produktnamen und Warenzeichen sind Eigentum ihrer jeweiligen Inhaber.'
+},
+fr: {
+  title: 'Calendrier des migraines — journal des crises, déclencheurs et médicaments pour Android',
+  h1: 'Calendrier des migraines',
+  lead: 'Un journal gratuit pour les crises de céphalées, les zones douloureuses, les déclencheurs possibles et les médicaments. Des observations claires à montrer à votre médecin.',
+  b1: 'gratuit', b2: 'sans publicité', b3: 'fonctionne hors ligne', b5: '6 langues', cta1: 'Télécharger sur RuStore',
+  sh1: 'Aperçu', cap1: 'Accueil et statistiques du mois', cap2: 'Durée, intensité et zones douloureuses', cap3: 'Zones douloureuses et déclencheurs possibles',
+  sh2: 'Fonctionnalités',
+  f1: 'Minuteur de crise et ajout manuel d’entrées',
+  f2: 'Durée de 1 à 72 heures et intensité sur une échelle de 1 à 3',
+  f3: 'Zones douloureuses multiples : front, tempes, yeux, arrière de la tête, sommet, visage, cou et autres',
+  f4: 'Déclencheurs possibles : sommeil, stress, variations hormonales, alimentation, caféine, météo, lumière, odeurs et autres',
+  f5: 'Nom et dose du médicament, avec les saisies précédentes disponibles pour une sélection rapide',
+  f6: 'Commentaire libre pour chaque crise',
+  f7: 'Historique mensuel, modification et suppression avec possibilité d’annulation',
+  f8: 'Statistiques mensuelles : crises, jours de migraine, durée et intensité moyennes',
+  f9: 'Export CSV du mois choisi pour un tableur ou pour le médecin',
+  f10: 'Trois thèmes et une interface en russe, anglais, allemand, français, espagnol et chinois',
+  sh3: 'Comment fonctionne le journal',
+  t1h: '1. Du début de la crise à un historique clair',
+  t1p: 'Marquez le début en un geste et ajoutez les détails à la fin ou plus tard. Une entrée peut être enregistrée même si certaines informations sont inconnues.',
+  t1a: '<b>Démarrage rapide.</b> Le minuteur enregistre le début ; une crise oubliée peut être ajoutée manuellement.',
+  t1b: '<b>Aucun détail obligatoire.</b> Vous choisissez si et quand ajouter intensité, zones, déclencheurs, médicaments et notes.',
+  t1c: '<b>Un historique sous votre contrôle.</b> Modifiez ou supprimez les entrées, avec annulation après suppression.',
+  t2h: '2. Vos données restent chez vous',
+  t2p: 'L’application fonctionne sans Internet, compte, publicité ni analyse. Le développeur ne reçoit aucune copie de vos entrées.',
+  t2a: '<b>Stockage local.</b> Le journal et les médicaments déjà saisis sont conservés uniquement sur votre appareil.',
+  t2b: '<b>CSV uniquement à votre demande.</b> Le fichier est créé via la boîte de dialogue Android à l’emplacement choisi. Vous décidez à qui l’envoyer.',
+  t2c: '<b>Suppression dans l’application.</b> Supprimez des entrées ou toutes les données de l’application à tout moment.',
+  sh4: 'Pourquoi tenir un journal',
+  who: 'Le journal évite de dépendre uniquement de la mémoire : avant la consultation, vous disposez des dates, durées, intensités et observations sur les facteurs possibles. Ce n’est pas un diagnostic automatique, mais un historique clair pour échanger avec un spécialiste.',
+  warning: '<b>Important :</b> l’application ne pose aucun diagnostic, ne prescrit aucun traitement et n’évalue pas l’efficacité des médicaments. La liste des déclencheurs consigne des observations sans établir de cause prouvée. Ne modifiez pas un traitement prescrit sur la base des entrées.',
+  ft1: 'Application :', ft2: 'politique de confidentialité', ft3: 'Proffstandart sur GitHub', tm: 'Tous les noms de produits et marques mentionnés sont la propriété de leurs détenteurs respectifs.'
+},
+zh: {
+  title: '偏头痛日历——适用于 Android 的发作、诱因与用药记录',
+  h1: '偏头痛日历',
+  lead: '免费记录头痛发作、疼痛部位、可能诱因和用药情况。清晰保存观察结果，就诊时可向医生展示。',
+  b1: '免费', b2: '无广告', b3: '离线运行', b5: '6 种语言', cta1: '在 RuStore 下载',
+  sh1: '界面预览', cap1: '主屏幕与月度统计', cap2: '持续时间、强度与疼痛部位', cap3: '疼痛部位与可能诱因',
+  sh2: '功能',
+  f1: '发作计时器与手动添加记录',
+  f2: '持续时间 1–72 小时，强度按 1–3 级记录',
+  f3: '可多选疼痛部位：额头、太阳穴、眼部、后脑、头顶、面部、颈部等',
+  f4: '可能诱因：睡眠、压力、激素变化、饮食、咖啡因、天气、光线、气味等',
+  f5: '记录药物名称与剂量，之前输入的内容可快速再次选择',
+  f6: '每次发作均可添加自由备注',
+  f7: '按月查看历史，可编辑、删除并撤销删除',
+  f8: '月度统计：发作次数、偏头痛天数、平均持续时间与强度',
+  f9: '按月份导出 CSV，可用表格查看或交给医生',
+  f10: '三种主题，支持俄语、英语、德语、法语、西班牙语和中文界面',
+  sh3: '记录工具如何工作',
+  t1h: '1. 从发作开始到清晰的历史记录',
+  t1p: '一键标记发作开始，在结束时或之后补充详情。即使部分信息未知，也能保存记录。',
+  t1a: '<b>快速开始。</b>计时器记录开始时间，漏记的发作可手动添加。',
+  t1b: '<b>没有必填详情。</b>由您决定何时以及是否填写强度、疼痛部位、诱因、药物和备注。',
+  t1c: '<b>由您掌控历史。</b>可编辑或删除记录，删除后还可撤销。',
+  t2h: '2. 数据留在您身边',
+  t2p: '应用无需互联网、账户、广告或分析服务。开发者不会收到您的记录副本。',
+  t2a: '<b>本地存储。</b>日记和此前输入的药物信息仅保存在您的设备上。',
+  t2b: '<b>仅由您主动导出 CSV。</b>文件通过 Android 系统对话框保存到您选择的位置，由您决定发送给谁。',
+  t2c: '<b>在应用内删除。</b>可随时删除单条记录或全部应用数据。',
+  sh4: '为什么要记录',
+  who: '日记让您不必只凭记忆：就诊前可查看发作日期、持续时间、强度以及对可能因素的观察。它不是自动诊断工具，而是与专业医生沟通的清晰病史。',
+  warning: '<b>重要提示：</b>应用不进行诊断、不开具治疗方案，也不评估药物疗效。诱因列表仅用于记录观察，并不代表已证实的原因。请勿根据应用记录改变医生制定的治疗方案。',
+  ft1: '应用：', ft2: '隐私政策', ft3: 'Proffstandart 的 GitHub', tm: '文中提及的所有产品名称和商标均为其各自所有者的财产。'
+},
+es: {
+  title: 'Calendario de migraña — diario de crisis, desencadenantes y medicamentos para Android',
+  h1: 'Calendario de migraña',
+  lead: 'Un diario gratuito de crisis de dolor de cabeza, zonas de dolor, posibles desencadenantes y medicamentos. Organiza tus observaciones y muéstralas al médico.',
+  b1: 'gratis', b2: 'sin anuncios', b3: 'funciona sin conexión', b5: '6 idiomas', cta1: 'Descargar en RuStore',
+  sh1: 'Vista previa', cap1: 'Inicio y estadísticas del mes', cap2: 'Duración, intensidad y zonas de dolor', cap3: 'Zonas de dolor y posibles desencadenantes',
+  sh2: 'Funciones',
+  f1: 'Temporizador de crisis y entrada manual de registros',
+  f2: 'Duración de 1 a 72 horas e intensidad en una escala de 1 a 3',
+  f3: 'Varias zonas de dolor: frente, sienes, ojos, parte posterior de la cabeza, coronilla, cara, cuello y más',
+  f4: 'Posibles desencadenantes: sueño, estrés, cambios hormonales, alimentación, cafeína, clima, luz, olores y más',
+  f5: 'Nombre y dosis del medicamento; las entradas anteriores están disponibles para selección rápida',
+  f6: 'Comentario libre para cada crisis',
+  f7: 'Historial mensual, edición y eliminación con opción de deshacer',
+  f8: 'Estadísticas mensuales: crisis, días con migraña, duración e intensidad medias',
+  f9: 'Exportación CSV de un mes elegido para una hoja de cálculo o para el médico',
+  f10: 'Tres temas e interfaz en ruso, inglés, alemán, francés, español y chino',
+  sh3: 'Cómo funciona el diario',
+  t1h: '1. Del inicio de la crisis a un historial claro',
+  t1p: 'Marca el inicio con un toque y añade los detalles al terminar o más tarde. El registro se puede guardar aunque falten datos.',
+  t1a: '<b>Inicio rápido.</b> El temporizador registra el comienzo; una crisis olvidada se puede añadir manualmente.',
+  t1b: '<b>Sin detalles obligatorios.</b> Tú decides si y cuándo añadir intensidad, zonas, desencadenantes, medicamentos y notas.',
+  t1c: '<b>Un historial bajo tu control.</b> Edita o elimina registros, con opción de deshacer después de borrar.',
+  t2h: '2. Tus datos se quedan contigo',
+  t2p: 'La aplicación funciona sin Internet, cuentas, anuncios ni analítica. El desarrollador no recibe copias de tus registros.',
+  t2a: '<b>Almacenamiento local.</b> El diario y los medicamentos anteriores se guardan solo en tu dispositivo.',
+  t2b: '<b>CSV solo cuando tú lo pides.</b> El archivo se crea mediante el diálogo del sistema Android en la ubicación elegida. Tú decides a quién enviarlo.',
+  t2c: '<b>Eliminación dentro de la app.</b> Borra registros individuales o todos los datos de la aplicación en cualquier momento.',
+  sh4: 'Para qué sirve el diario',
+  who: 'El diario evita depender solo de la memoria: antes de la consulta tendrás fechas, duración, intensidad y observaciones sobre posibles factores. No es un diagnóstico automático, sino un historial claro para hablar con un especialista.',
+  warning: '<b>Importante:</b> la aplicación no diagnostica, no prescribe tratamientos ni evalúa la eficacia de los medicamentos. La lista de desencadenantes registra observaciones y no demuestra causas. No cambies un tratamiento prescrito basándote en los registros.',
+  ft1: 'Aplicación:', ft2: 'política de privacidad', ft3: 'Proffstandart en GitHub', tm: 'Todos los nombres de productos y marcas mencionados son propiedad de sus respectivos dueños.'
+}
+};
+
+function setLang(lang) {
+  const selected = I18N[lang] ? lang : 'ru';
+  const dict = I18N[selected];
+  document.documentElement.lang = selected;
+  document.title = dict.title;
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key] !== undefined) el.innerHTML = dict[key];
+  });
+  document.querySelectorAll('[data-alt-key]').forEach((img) => {
+    const key = img.getAttribute('data-alt-key');
+    if (dict[key] !== undefined) img.alt = dict[key];
+  });
+  document.querySelectorAll('#langtabs button').forEach((button) => {
+    const active = button.getAttribute('data-lang') === selected;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-pressed', String(active));
+  });
+  try { localStorage.setItem('migraine-site-lang', selected); } catch (e) {}
+}
+
+document.querySelectorAll('#langtabs button').forEach((button) => {
+  button.addEventListener('click', () => setLang(button.getAttribute('data-lang')));
+});
+
+let saved = null;
+try { saved = localStorage.getItem('migraine-site-lang'); } catch (e) {}
+const browser = (navigator.language || 'ru').slice(0, 2).toLowerCase();
+setLang(saved || (I18N[browser] ? browser : 'ru'));
+</script>
+</body>
+</html>

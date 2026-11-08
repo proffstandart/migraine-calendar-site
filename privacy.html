@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Политика конфиденциальности — Календарь мигрени</title>
+<meta name="description" content="Политика конфиденциальности приложения Календарь мигрени: локальное хранение записей, отсутствие передачи данных и экспорт CSV по действию пользователя.">
+<link rel="icon" type="image/png" href="img/icon-512.png">
+<style>
+  :root { --bg: oklch(0.145 0.008 285); --card: oklch(0.19 0.009 285); --text: oklch(0.93 0.012 85); --dim: oklch(0.76 0.015 285); --line: oklch(0.93 0.012 85 / 0.16); --focus: oklch(0.88 0.09 85); color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100dvh; background: var(--bg); color: var(--text); font: 16px/1.7 system-ui, sans-serif; }
+  main { max-width: 820px; margin: 0 auto; padding: 28px 20px 64px; }
+  h1, h2 { font-family: Georgia, 'Times New Roman', serif; line-height: 1.25; text-wrap: balance; }
+  h1 { font-size: clamp(1.8rem, 5vw, 2.4rem); margin: 28px 0 20px; }
+  h2 { margin-top: 32px; font-size: 1.3rem; }
+  p, li { color: var(--dim); }
+  strong { color: var(--text); }
+  a { color: var(--text); text-underline-offset: 3px; }
+  a:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+  .back { display: inline-flex; align-items: center; min-height: 44px; }
+  .notice { padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--card); }
+  code { overflow-wrap: anywhere; }
+  .english { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+<main>
+  <a class="back" href="index.html">← Календарь мигрени / Migraine Calendar</a>
+  <h1>Политика конфиденциальности приложения «Календарь мигрени»</h1>
+  <p class="notice"><strong>Записи о здоровье хранятся только на вашем устройстве.</strong> Приложение не передаёт их разработчику или третьим лицам.</p>
+  <p>Дата вступления в силу: 29 октября 2026 г.<br>Разработчик: Proffstandart.<br>Контакт для вопросов конфиденциальности: <a href="mailto:proffstandart@rambler.ru">proffstandart@rambler.ru</a>.</p>
+
+  <h2>1. Назначение документа</h2>
+  <p>Настоящая политика описывает обработку сведений в Android-приложении «Календарь мигрени», пакет <code>ru.proffstandart.migrainecalendar</code>. Приложение предназначено для локального ведения дневника приступов, истории, статистики и экспорта записей по действию пользователя.</p>
+
+  <h2>2. Какие сведения вводит пользователь</h2>
+  <p>Пользователь может вводить следующие сведения о здоровье:</p>
+  <ul>
+    <li>дату, время начала, окончание и длительность приступа;</li>
+    <li>силу приступа, зоны боли и возможные триггеры;</li>
+    <li>название лекарства и принятую дозировку;</li>
+    <li>произвольную заметку;</li>
+    <li>ранее введённые сочетания названия лекарства и дозы для повторного выбора.</li>
+  </ul>
+  <p>Все характеристики необязательны. Пользователь сам определяет объём вводимых сведений и текст заметки. Просьба не вводить в заметку фамилию, имя, адрес, контакты и другие сведения, не нужные для ведения дневника.</p>
+
+  <h2>3. Цели обработки</h2>
+  <p>Сведения используются исключительно для отображения и хранения дневника, редактирования записей, расчёта помесячной статистики, повторного выбора ранее введённого лекарства и формирования CSV-файла по явному запросу пользователя.</p>
+
+  <h2>4. Локальное хранение и отсутствие передачи</h2>
+  <p>Записи хранятся в локальной базе приложения и его локальных настройках на устройстве пользователя. Разработчик не получает и не хранит копии этих сведений на своих серверах.</p>
+  <p>Приложение не запрашивает разрешение на доступ в интернет, не содержит рекламных или аналитических SDK, не использует учётные записи, не собирает идентификаторы устройства и не передаёт введённые сведения разработчику или третьим лицам. Резервное копирование данных приложения средствами Android отключено.</p>
+
+  <h2>5. Экспорт CSV</h2>
+  <p>CSV-файл создаётся только по явному действию пользователя через системный диалог Android и сохраняется в выбранном пользователем месте. Приложение не отправляет файл врачу, разработчику или третьим лицам. После экспорта пользователь самостоятельно управляет файлом и выбирает, кому и как его передать.</p>
+
+  <h2>6. Срок хранения и удаление</h2>
+  <p>Сведения хранятся на устройстве до их удаления пользователем. Отдельную запись можно удалить из истории или редактора. Все записи и список ранее введённых лекарств можно удалить через пункт «Удалить все данные» в настройках. Удаление приложения удаляет его локальные данные. Экспортированные CSV-файлы не удаляются приложением; их следует удалить отдельно в месте сохранения.</p>
+
+  <h2>7. Дети</h2>
+  <p>Приложение не предназначено специально для детей младше 12 лет и не содержит детского профиля или учётной записи. Разработчик не получает сведения о возрасте пользователя.</p>
+
+  <h2>8. Медицинское предупреждение</h2>
+  <p>Приложение не ставит диагнозы, не назначает лечение и не заменяет консультацию врача. Сведения о лекарствах и триггерах являются пользовательскими записями, а не медицинскими рекомендациями.</p>
+
+  <h2>9. Контакты и обращения</h2>
+  <p>По вопросам конфиденциальности можно обратиться по адресу <a href="mailto:proffstandart@rambler.ru">proffstandart@rambler.ru</a>. Поскольку записи не поступают разработчику, он не может восстановить, изменить или удалить их на устройстве пользователя удалённо.</p>
+
+  <h2>10. Изменение политики</h2>
+  <p>Актуальная редакция публикуется на этой странице. Дата последнего обновления: 29 октября 2026 г.</p>
+
+  <section class="english" lang="en">
+    <h1>Privacy Policy — Migraine Calendar</h1>
+    <p class="notice"><strong>Your health records are stored only on your device.</strong> The app does not transmit them to the developer or third parties.</p>
+    <p>Effective date: October 29, 2026.<br>Developer: Proffstandart.<br>Privacy contact: <a href="mailto:proffstandart@rambler.ru">proffstandart@rambler.ru</a>.</p>
+
+    <h2>1. Scope</h2>
+    <p>This policy applies to the Android app Migraine Calendar, package <code>ru.proffstandart.migrainecalendar</code>. The app keeps a local diary of attacks, history and statistics, and exports records only at the user’s request.</p>
+
+    <h2>2. Information entered by the user</h2>
+    <p>You may enter attack dates, start and end times, duration, intensity, pain areas, possible triggers, medication names and dosages, free-form notes, and previously used medication entries. All details are optional. Please do not put names, addresses, contacts or other unnecessary identifiers in notes.</p>
+
+    <h2>3. Purpose</h2>
+    <p>The information is used only to display and store the diary, edit records, calculate monthly statistics, suggest previously entered medications, and create a CSV file at your explicit request.</p>
+
+    <h2>4. Local storage and no transmission</h2>
+    <p>Records are stored in the app’s local database and settings on your device. The developer does not receive or store copies. The app does not request internet permission, contains no advertising or analytics SDKs, uses no accounts, collects no device identifiers, and sends no entered information to the developer or third parties. Android backup of app data is disabled.</p>
+
+    <h2>5. CSV export</h2>
+    <p>A CSV file is created only at your explicit request through the Android system dialog and saved where you choose. The app does not send it to a doctor, the developer or third parties. You control the exported file and decide whether and how to share it.</p>
+
+    <h2>6. Retention and deletion</h2>
+    <p>Information remains on your device until you delete it. Individual records can be deleted from history or the editor. All records and previously entered medications can be removed with “Delete all data” in Settings. Uninstalling the app deletes its local data. Exported CSV files are not deleted by the app and must be removed separately.</p>
+
+    <h2>7. Children</h2>
+    <p>The app is not specifically intended for children under 12 and contains no child profile or account. The developer does not receive the user’s age.</p>
+
+    <h2>8. Medical notice</h2>
+    <p>The app does not diagnose, prescribe treatment or replace medical advice. Medication and trigger entries are user observations, not medical recommendations.</p>
+
+    <h2>9. Contact</h2>
+    <p>For privacy questions, email <a href="mailto:proffstandart@rambler.ru">proffstandart@rambler.ru</a>. Because records never reach the developer, they cannot be restored, changed or deleted remotely.</p>
+
+    <h2>10. Changes</h2>
+    <p>The current version is published on this page. Last updated: October 29, 2026.</p>
+  </section>
+</main>
+</body>
+</html>
